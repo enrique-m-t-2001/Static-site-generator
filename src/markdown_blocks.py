@@ -1,7 +1,9 @@
 from enum import Enum
+
 from htmlnode import ParentNode
-from textnode import TextNode,TextType,text_node_to_html_node
 from inline_markdown import text_to_textnodes
+from textnode import text_node_to_html_node, TextNode, TextType
+
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -48,12 +50,6 @@ def block_to_block_type(block):
             i += 1
         return BlockType.OLIST
     return BlockType.PARAGRAPH
-
-def extract_title(markdown):
-    first_block = markdown_to_blocks(markdown)[0]
-    if block_to_block_type(first_block) != BlockType.HEADING or not first_block.startswith("# "):
-        raise Exception("The markdown has not title")
-    return first_block.lstrip("#").strip()
 
 
 def markdown_to_html_node(markdown):

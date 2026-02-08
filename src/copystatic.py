@@ -1,15 +1,16 @@
 import os
 import shutil
-def copy_directory(src,dst,relative_path = ""):
-    for content in os.listdir(src):
-        src_path = os.path.join(src, content)
-        rel = os.path.join(relative_path, content) if relative_path else content
-        dst_path = os.path.join(dst, rel)
 
-        if os.path.isfile(src_path):
-            os.makedirs(os.path.dirname(dst_path), exist_ok=True)
-            shutil.copy2(src_path, dst_path)
-        elif os.path.isdir(src_path):
-            os.makedirs(dst_path, exist_ok=True)
-            copy_directory(src_path, dst, rel)
-            
+
+def copy_files_recursive(source_dir_path, dest_dir_path):
+    if not os.path.exists(dest_dir_path):
+        os.mkdir(dest_dir_path)
+
+    for filename in os.listdir(source_dir_path):
+        from_path = os.path.join(source_dir_path, filename)
+        dest_path = os.path.join(dest_dir_path, filename)
+        print(f" * {from_path} -> {dest_path}")
+        if os.path.isfile(from_path):
+            shutil.copy(from_path, dest_path)
+        else:
+            copy_files_recursive(from_path, dest_path)
